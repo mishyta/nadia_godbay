@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Надія Є! 🎉</title>
+    <!-- Підключення Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Налаштування шрифту Inter -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fce7f3; /* Ніжно-рожевий фон */
+            overflow: hidden; /* Запобігання прокручуванню */
+            min-height: 100vh;
+            padding-bottom: 6rem; /* Відступ знизу для фіксованої стрічки */
+        }
+
+        /* Ключові кадри для обертання */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Стилі для плаваючих емодзі */
+        .floating-emoji {
+            position: fixed;
+            font-size: 2.5rem;
+            opacity: 0.85;
+            pointer-events: none;
+            will-change: transform, opacity;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        @keyframes floatAnimation {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        /* КОЛО: НАЙНАДІЙНІШЕ ЦЕНТРУВАННЯ ЗНОВУ */
+        .photo-spin-container {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 50vmin;
+            height: 50vmin;
+            margin: auto; /* ГАРАНТІЯ ЦЕНТРУВАННЯ */
+            z-index: 10; /* Під усіма текстами */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spin 20s linear infinite;
+        }
+
+        /* Стиль самого фото (всередині великого контейнера) */
+        .photo-spin {
+            width: 90%;
+            height: 90%;
+            animation: none;
+            border: 15px solid #f97316;
+            box-shadow: 0 0 50px rgba(249, 115, 22, 0.7);
+            transition: transform 0.3s ease;
+        }
+
+        /* Стилі для бегучих стрічок */
+        .marquee-row-content {
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .marquee-row { animation: marquee 30s linear infinite; }
+        .marquee-row-reverse { animation: marquee-reverse 35s linear infinite; }
+        .marquee-row-fast { animation: marquee 20s linear infinite; }
+
+        /* Фіксована стрічка знизу */
+        .fixed-bottom-marquee {
+            position: fixed;
+            left: 0;
+            width: 100%;
+            z-index: 30;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+        @keyframes marquee-reverse {
+            0% { transform: translate3d(-100%, 0, 0); }
+            100% { transform: translate3d(0, 0, 0); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Великий обертовий круг на всю сторінку (фон) -->
+<div class="photo-spin-container">
+    <img
+            src="./nadiia_photo.jpg"
+            alt="Фото Надії"
+            class="photo-spin rounded-full object-cover"
+            onerror="this.onerror=null; this.src='https://placehold.co/500x500/4F46E5/FFFFFF?text=НАДІЯ';"
+    />
+</div>
+
+<!-- КОНТЕНТ -->
+
+<!-- 1. Заголовок (ЗАЛИШАЄМО ЗВЕРХУ) -->
+<div id="header-block" class="fixed top-2 left-1/2 -translate-x-1/2 z-30 text-center p-6 bg-white rounded-xl shadow-2xl max-w-4xl w-[90%] md:w-full">
+    <h1 class="text-5xl font-extrabold text-red-600 mb-2 sm:text-6xl">
+        НАДІЯ Є! ✨
+    </h1>
+    <p class="text-2xl font-semibold text-gray-700">
+        Наш найкращий БАС Аналітик сьогодні завершує свою місію!
+    </p>
+    <p class="text-xl text-indigo-500 mt-2">
+        Це не прощання, це "До нових зустрічей!"
+    </p>
+</div>
+
+<!-- 2. Перший біжучий рядок (ПЕРЕНЕСЕНО ВНИЗ) -->
+<div class="fixed-bottom-marquee bottom-[8.5rem] py-4 bg-yellow-400 border-t-4 border-b-4 border-yellow-600 shadow-inner">
+    <div class="marquee-row-content marquee-row text-4xl font-black uppercase text-indigo-800">
+        &nbsp;&nbsp;НАДІЯ Є! 🏆 &nbsp;&nbsp;НАДІЯ ЛУТША! 💖 &nbsp;&nbsp;ДЯКУЄМО ЗА КРУТІ АНАЛІЗИ! 📊 &nbsp;&nbsp;МИ БУДЕМО СУМУВАТИ! 😭 &nbsp;&nbsp;УСПІХІВ У НОВИХ ЗВЕРШЕННЯХ! 🥂
+    </div>
+</div>
+
+<!-- 3. Другий біжучий рядок (ПЕРЕНЕСЕНО ВНИЗ) -->
+<div class="fixed-bottom-marquee bottom-[4.25rem] py-4 bg-pink-400 border-t-4 border-b-4 border-pink-600 shadow-inner">
+    <div class="marquee-row-content marquee-row-reverse text-4xl font-black uppercase text-white">
+        &nbsp;&nbsp;ВИ НАЙКРАЩА! 🌟 &nbsp;&nbsp;ВСЕ БУДЕ ЧІТКО! ✅ &nbsp;&nbsp;ЧЕКАЄМО В ГОСТІ! 🤗 &nbsp;&nbsp;БАС БЕЗ ВАС НЕ БАС! 💔 &nbsp;&nbsp;ГАРНОГО ПОЧАТКУ! 🚀 &nbsp;&nbsp;ВИ НАЙКРАЩА! 🌟 &nbsp;&nbsp;ВСЕ БУДЕ ЧІТКО! ✅
+    </div>
+</div>
+
+
+<!-- 4. Третій біжучий рядок (ЗАЛИШАЄМО НАЙНИЖЧЕ) -->
+<div class="fixed-bottom-marquee bottom-0 bg-red-300 border-t-4 border-red-500 shadow-2xl">
+    <div class="marquee-row-content marquee-row-fast text-4xl font-black uppercase text-red-900 py-1">
+        &nbsp;&nbsp;ВЕЛИКЕ СПАСИБІ! 💜 &nbsp;&nbsp;АНАЛІТИК-ЗІРКА! 🤩 &nbsp;&nbsp;КРАЩА НАДІЯ КОМАНДИ! 🥇 &nbsp;&nbsp;БАЖАЄМО УСПІХУ! 🍀 &nbsp;&nbsp;ВЕЛИКЕ СПАСИБІ! 💜 &nbsp;&nbsp;АНАЛІТИК-ЗІРКА! 🤩
+    </div>
+</div>
+
+<!-- Скрипт для генерації плаваючих емодзі -->
+<script>
+    const emojis = ['🎉', '💐', '💯', '🌟', '👏', '🥳', '✅', '💡', '❤️', '🚀', '👑', '💖', '🏆', '📊', '😭', '🥂', '✨', '🔥', '😘', '😎', '👍', '😊', '😍', '💜', '🥇', '🍀', '🤩'];
+    const confettiCount = 50;
+    const spawnInterval = 1000;
+
+    function createFloatingEmoji() {
+        const emojiElement = document.createElement('span');
+        emojiElement.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emojiElement.className = 'floating-emoji';
+
+        const startX = Math.random() * 100;
+        const startY = Math.random() * 100;
+        emojiElement.style.left = `${startX}vw`;
+        emojiElement.style.top = `${startY}vh`;
+
+        const duration = 12 + Math.random() * 15;
+        const delay = Math.random() * 5;
+        const size = 1.8 + Math.random() * 1.5;
+
+        const dx = (Math.random() - 0.5) * 60;
+        const dy = (Math.random() - 0.5) * 60;
+        const rot = (Math.random() - 0.5) * 360;
+
+        emojiElement.style.setProperty('--dx', `${dx}vw`);
+        emojiElement.style.setProperty('--dy', `${dy}vh`);
+        emojiElement.style.setProperty('--rot', `${rot}deg`);
+
+        emojiElement.style.fontSize = `${size}rem`;
+        emojiElement.style.animation = `floatAnimation ${duration}s ease-in-out ${delay}s infinite alternate`;
+
+        document.body.appendChild(emojiElement);
+
+        setTimeout(() => {
+            emojiElement.remove();
+        }, duration * 1000 + 1000);
+    }
+
+    function startEmojiRain() {
+        for (let i = 0; i < confettiCount / 2; i++) {
+            createFloatingEmoji();
+        }
+        let currentCount = confettiCount / 2;
+        const interval = setInterval(() => {
+            if (currentCount < confettiCount) {
+                createFloatingEmoji();
+                currentCount++;
+            } else {
+                createFloatingEmoji();
+            }
+        }, spawnInterval);
+    }
+
+    window.onload = startEmojiRain;
+
+</script>
+</body>
+</html>
