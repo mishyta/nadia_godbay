@@ -2,73 +2,82 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Дідика не хвалили</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Лови суші!</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap');
-
-        body {
-            font-family: 'Rubik', sans-serif;
-            background: linear-gradient(135deg, #e0eafc, #cfdef3);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            max-width: 360px;
-            animation: floatIn 1s ease-out forwards;
-        }
-
-        .photo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
-        }
-
-        .title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .count {
-            font-size: 48px;
-            font-weight: bold;
-            color: #0077cc;
-            margin-top: 10px;
-        }
-
-        @keyframes floatIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        body { margin: 0; overflow: hidden; background: #87CEEB; touch-action: none; }
+        #gameCanvas { display: block; }
+        #scoreBoard { 
+            position: absolute; top: 20px; left: 20px; font-size: 32px; 
+            color: white; font-family: sans-serif; text-shadow: 2px 2px #000;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <img src="photo.jpeg" alt="Фото Дідика" class="photo">
-        <div class="title">Дідика не хвалили </div>
-        <div class="count" id="counter">0</div>
-<div class="title">днів</div>
-    </div>
 
-    <script>
-        // Залишено для майбутнього інтерактиву, наприклад автозбільшення або кнопка
-        let count = 0;
-        document.getElementById('counter').textContent = count;
-    </script>
+<div id="scoreBoard">Суші: 0</div>
+<canvas id="gameCanvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreBoard = document.getElementById('scoreBoard');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let score = 0;
+    const player = { x: canvas.width / 2 - 50, y: canvas.height - 200, w: 100, h: 100, speed: 100 };
+    const sushiList = [];
+    const sushiW = 125 / 2; // зменшено в 2 рази
+    const sushiH = 100 / 2;
+
+    const bgImg = new Image(); bgImg.src = 'bg.jpg';
+    const playerImg = new Image(); playerImg.src = 'sticker.webp';
+    const sushiImg = new Image(); sushiImg.src = 'sushu.png';
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (bgImg.complete) ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+        if (playerImg.complete) ctx.drawImage(playerImg, player.x, player.y, player.w, player.h);
+
+        sushiList.forEach((s, index) => {
+            if (sushiImg.complete) ctx.drawImage(sushiImg, s.x, s.y, sushiW, sushiH);
+            s.y += s.speed;
+
+            if (s.y + sushiH > player.y && s.x + sushiW > player.x && s.x < player.x + player.w) {
+                sushiList.splice(index, 1);
+                score++;
+                scoreBoard.innerText = 'Суші: ' + score;
+            }
+            if (s.y > canvas.height) sushiList.splice(index, 1);
+        });
+        requestAnimationFrame(draw);
+    }
+
+    // Керування клавішами
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' && player.x > 0) player.x -= player.speed;
+        if (e.key === 'ArrowRight' && player.x < canvas.width - player.w) player.x += player.speed;
+    });
+
+    // Керування дотиком (сенсор)
+    window.addEventListener('touchstart', (e) => {
+        const touchX = e.touches[0].clientX;
+        if (touchX < canvas.width / 2) {
+            // Ліва частина екрана - вліво
+            if (player.x > 0) player.x -= player.speed;
+        } else {
+            // Права частина екрана - вправо
+            if (player.x < canvas.width - player.w) player.x += player.speed;
+        }
+    });
+
+    setInterval(() => {
+        sushiList.push({ x: Math.random() * (canvas.width - sushiW), y: -sushiH, speed: 5 + Math.random() * 4 });
+    }, 800);
+
+    draw();
+</script>
 </body>
 </html>
